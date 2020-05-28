@@ -4,47 +4,72 @@ import { CoronaChecker } from "./screens";
 import { ResultScreen } from "./screens";
 
 export default function App() {
-  const [point, setPoint] = useState(0);
+  const [statusPoints, setStatusPoints] = useState(0);
+  const [symptomsPoints, setSymptomsPoints] = useState(0);
   const [currentScreen, setCurrentScreen] = useState("corona-checker");
 
   //Result screen hooks
-  const [message, setMessage] = useState("");
+  const [statusMessage, setStatusMessage] = useState("");
+  const [symptomsMessage, setSymptomsMessage] = useState("");
   const [resultImage, setResultImage] = useState("no-virus");
 
   useEffect(() => {
+    // Find status message
+    console.log(statusPoints, symptomsPoints);
+
     switch (true) {
-      case point < 50:
-        setMessage("Looks like you are free from any virus");
+      case statusPoints < 90:
+        setStatusMessage("medical care is not required");
+        break;
+      case statusPoints >= 70 && statusPoints < 150:
+        setStatusMessage(
+          "medical care is not necessary, but please contact to your doctor"
+        );
+        break;
+      case statusPoints >= 150:
+        setStatusMessage(
+          "medical care is required, Patient must stay at hospital"
+        );
+        break;
+      default:
+        break;
+    }
+
+    // Find disease message
+    switch (true) {
+      case symptomsPoints < 40:
+        setSymptomsMessage("Looks like you are free from any virus");
         setResultImage("no-virus");
         break;
-      case point >= 50 && point < 100:
-        setMessage("There is low chance you have corona virus");
+      case symptomsPoints >= 40 && symptomsPoints < 60:
+        setSymptomsMessage("There is low chance you have corona virus");
         setResultImage("doctor");
         break;
-      case point >= 100 && point < 200:
-        setMessage("There is risk you have corona virus");
+      case symptomsPoints >= 60 && symptomsPoints < 100:
+        setSymptomsMessage("There is risk you have corona virus");
         setResultImage("fever");
         break;
-      case point >= 200 && point < 300:
-        setMessage("There is high chance you have corona virus");
+      case symptomsPoints >= 100 && symptomsPoints < 140:
+        setSymptomsMessage("There is high chance you have corona virus");
         setResultImage("medical-mask");
         break;
-      case point > 300:
-        setMessage("Looks like you got corona virus");
+      case symptomsPoints > 140:
+        setSymptomsMessage("Looks like you got corona virus");
         setResultImage("bacteria");
         break;
       default:
         break;
     }
-  }, [point]);
+  }, [statusPoints]);
 
   const goBack = () => {
-    setPoint(0);
+    setStatusPoints(0);
     setCurrentScreen("corona-checker");
   };
 
-  const showResult = (pointFromCoronaChecker) => {
-    setPoint(pointFromCoronaChecker);
+  const showResult = (statusPoints, symptomsPoints) => {
+    setStatusPoints(statusPoints);
+    setSymptomsPoints(symptomsPoints);
     setCurrentScreen("result-screen");
   };
 
@@ -54,7 +79,8 @@ export default function App() {
         <CoronaChecker showResult={showResult} />
       ) : (
         <ResultScreen
-          message={message}
+          statusMessage={statusMessage}
+          symptomsMessage={symptomsMessage}
           resultImage={resultImage}
           goBack={goBack}
         />

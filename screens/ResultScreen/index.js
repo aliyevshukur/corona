@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import { images } from "../../global";
 
-export const ResultScreen = ({ message, resultImage, goBack }) => {
+export const ResultScreen = ({
+  statusMessage,
+  symptomsMessage,
+  resultImage,
+  goBack,
+}) => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -27,7 +32,9 @@ export const ResultScreen = ({ message, resultImage, goBack }) => {
             />
           </View>
           <View style={styles.messageWrapper}>
-            <Text style={styles.message}>{message}</Text>
+            <Text style={styles.message}>
+              {symptomsMessage} and in case of Coronavirus {statusMessage}
+            </Text>
           </View>
           <Button
             style={styles.goBack}
