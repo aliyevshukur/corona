@@ -19,7 +19,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.6",
     "babel-preset-expo": "~8.1.0",
-    "electron": "^8.2.3"
+    "electron": "^13.6.6"
   },
   "private": true
 }
